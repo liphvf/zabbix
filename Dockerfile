@@ -2,15 +2,16 @@ FROM debian:jessie
 
 ADD zabbix/ /usr/src/zabbix
 
+ADD sources.list /etc/apt/
+
 # add webupd8 repository
 RUN apt-get update  && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes openjdk-8-jdk openjdk-8-jdk-headless openjdk-8-jre \
+    DEBIAN_FRONTEND=noninteractive apt-get install -y --force-yes openjdk-7-jdk openjdk-7-jre \
 	make flex gcc gpp libpq5 libpq-dev snmp automake snmpd libiksemel-dev libcurl4-gnutls-dev libssh2-1-dev libssh2-1 libopenipmi-dev libsnmp-dev curl fping \
 	sudo libcurl3-gnutls libxml2-dev  php5 php5-pgsql php5-ldap php5-fpm php-apc php5-curl php5-xmlrpc php5-gd php-net-socket nano nginx pkg-config libldap2-dev snmp-mibs-downloader traceroute && \
     \
 	\
     echo "===> clean up..."  && \
-	rm -rf /var/cache/oracle-jdk8-installer && \
 	apt-get clean  && \
     rm -rf /var/lib/apt/lists/*
 
@@ -48,6 +49,6 @@ ADD php.ini /etc/php5/fpm/
 # Setup Volume
 VOLUME ["/var/www/html/zabbix"]
 
-ADD ./entrypoint.sh /
-# ENTRYPOINT ["/entrypoint.sh"]
-CMD ["/entrypoint.sh"]
+ADD ./startup.sh /
+# ENTRYPOINT ["/startup.sh"]
+CMD ["/startup.sh"]
