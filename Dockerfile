@@ -1,4 +1,5 @@
 FROM debian:jessie
+MAINTAINER Filiphe Vilar <liphvf@gmail.com>
 
 ADD zabbix/ /usr/src/zabbix
 
@@ -23,8 +24,10 @@ WORKDIR /usr/src/zabbix
 RUN chmod +x configure
 
 # Compilando o zabbix
-RUN ./configure --enable-server --enable-agent --enable-java --with-postgresql --with-net-snmp --with-libcurl --with-ssh2 \
+RUN ./configure --enable-server --enable-agent --with-postgresql --with-net-snmp --with-libcurl --with-ssh2 \
 --with-openipmi --with-libxml2 --with-openssl --with-jabber --with-ldap --with-iconv
+
+# --enable-java
 RUN make && make install
 
 RUN useradd -s /bin/false zabbix && \
